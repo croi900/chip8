@@ -14,14 +14,14 @@ typedef void(*instruction_t)(byte*);
 //easily interpreting instructions
 
 //Clears the screen
-void ins_00E0(byte*){
+void ins_00E0(byte* ins){
     display[0] = 0;
 }
 
 // The interpreter sets the program counter 
 //to the address at the top of the stack, 
 //then subtracts 1 from the stack pointer.
-void ins_00EE(byte*){
+void ins_00EE(byte* ins){
     pc = callstack[sp];
     sp--;
 }
@@ -222,9 +222,66 @@ void ins_8xy7(byte* ins){
     V[x] = V[y] - V[x];
 }
 
+//Vx = Vx SHL 1
 
+//if the MSB of Vx is 1 then VF is 
+//set to one then Vx is multiplied by 
+//two, for some reason, Vy is 
+//not used in this instruction.
+void ins_8xyE(byte* ins){
+    byte x = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble
 
+    V[0xF] = (V[x]>>(sizeof(byte)-1)) & 1;
+    V[x] = V[x] * 2;
+}
 
+// Skip next instruction if Vx != Vy.
+
+// The values of Vx and Vy are compared,
+// and if they are not equal, 
+// the program counter is increased 
+// by 2.
+void ins_9xy0(byte* ins){
+    byte x = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble
+    byte y = *(ins+1)>>sizeof(byte)*4; //get higher nibble
+
+    if(V[x] != V[y])
+        pc++;
+}
+
+//The value of register I is set to nnn.
+void ins_Annn(byte* ins){
+    byte n = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble from first byte
+    byte nn = *(ins+1); //get second byte (last two thirds)
+
+    I = nn;
+    I = I + n<<(sizeof(word)/2);
+}
+
+//The program counter is set to nnn 
+//plus the value of V0.
+void ins_Bnnn(byte* ins){
+    byte n = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble from first byte
+    byte nn = *(ins+1); //get second byte (last two thirds)
+
+    word addy = nn + n<<(sizeof(word)/2);
+    
+    pc = addy + V[0];
+}
+
+//Generates a random byte.
+byte rbyte(byte seed){
+    
+}
+
+//The interpreter generates a 
+//random number from 0 to 255, 
+//which is then ANDed with the 
+//value kk. The results are 
+//stored in Vx.
+void ins_Cxkk(byte* ins){
+
+}
 
 instruction_t ins[] = {
     ins_00E0,

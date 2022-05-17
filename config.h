@@ -41,3 +41,9 @@ byte sp = 0;
 word pc = 0;
 
 byte display[DISPLAY_HEIGHT * DISPLAY_WIDTH];
+
+//This register is generally used to
+//store memory addresses, so only 
+//the lowest (rightmost) 12 
+//bits are usually used.
+word I = 0;
