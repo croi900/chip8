@@ -1,7 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
+#pragma once
 
+#include <stdint.h>
 
 #define RAM_SIZE 4096
 #define RAM_START 0x0
@@ -11,7 +10,7 @@
 
 #define STACK_SIZE 16
 #define REGISTER_NUM 16
-
+#define INSTRUCTION_NUM 36
 
 typedef uint8_t byte;
 typedef uint16_t word;
@@ -37,3 +36,8 @@ byte V[REGISTER_NUM];
 word callstack[STACK_SIZE];
 byte sp = 0;
 
+//Program Counter that stores the 
+//current instruction currently executed
+word pc = 0;
+
+byte display[DISPLAY_HEIGHT * DISPLAY_WIDTH];
