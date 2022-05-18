@@ -1,5 +1,6 @@
 #pragma once
 #include "config.h"
+#include "xorshift.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -270,9 +271,9 @@ void ins_Bnnn(byte* ins){
 }
 
 //Generates a random byte.
-byte rbyte(byte seed){
+// byte rbyte(byte seed){
     
-}
+// }
 
 //The interpreter generates a 
 //random number from 0 to 255, 
@@ -280,7 +281,11 @@ byte rbyte(byte seed){
 //value kk. The results are 
 //stored in Vx.
 void ins_Cxkk(byte* ins){
+    byte rnd = xor_byte();
+    rnd &= *(ins+1); //get second byte 
+    byte x = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble
 
+    V[x] = rnd;
 }
 
 instruction_t ins[] = {
