@@ -288,6 +288,42 @@ void ins_Cxkk(byte* ins){
     V[x] = rnd;
 }
 
+
+// Display n-byte sprite starting
+// at memory location I at 
+//(Vx, Vy), set VF = collision.
+
+//The interpreter reads n bytes 
+// from memory, starting at the 
+// address stored in I. These bytes 
+// are then displayed as sprites on 
+// screen at coordinates (Vx, Vy). 
+// Sprites are XORed onto the existing 
+// screen. If this causes any pixels 
+// to be erased, VF is set to 1, 
+// otherwise it is set to 0. If the 
+// sprite is positioned so part of 
+// it is outside the coordinates of 
+// the display, it wraps around to 
+// the opposite side of the screen. 
+void ins_Dxyn(byte* ins){
+    byte x = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble
+    byte y = *(ins+1)>>sizeof(byte)*4; //get higher nibble
+    byte n = *(ins+1)&((byte)(-1)>>sizeof(byte)*4); // get n
+
+    x = V[x];
+    y = V[y];
+
+    for(byte i = 0; i < n; ++i){
+        for(byte j = 0; j < 8; ++j){
+            byte px = (x + j) % DISPLAY_WIDTH;
+            byte py = (y + i) % DISPLAY_HEIGHT;
+
+            
+        }
+    }
+}
+
 instruction_t ins[] = {
     ins_00E0,
     ins_00EE,
