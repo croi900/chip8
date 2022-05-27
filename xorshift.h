@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdint.h>
 
 /* These state variables must be initialised so that they are not all zero. */

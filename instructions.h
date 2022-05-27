@@ -315,11 +315,16 @@ void ins_Dxyn(byte* ins){
     y = V[y];
 
     for(byte i = 0; i < n; ++i){
+        byte b = ram[I + i];
         for(byte j = 0; j < 8; ++j){
             byte px = (x + j) % DISPLAY_WIDTH;
             byte py = (y + i) % DISPLAY_HEIGHT;
+            byte pval = (b>>j)&1;
 
-            
+            printf("%d %d\n",px,py);
+            if(display[py * DISPLAY_WIDTH + px] == 1 && pval)
+                V[0xF] = 1;
+            display[py * DISPLAY_WIDTH + px] ^= pval;
         }
     }
 }
