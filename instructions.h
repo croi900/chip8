@@ -8,6 +8,9 @@
 
 typedef void(*instruction_t)(byte*);
 
+//Function to check if key is down
+
+
 
 //A vector of pointers to functions, each
 //entry in the vector represents an instruction
@@ -321,12 +324,27 @@ void ins_Dxyn(byte* ins){
             byte py = (y + i) % DISPLAY_HEIGHT;
             byte pval = (b>>j)&1;
 
-            printf("%d %d\n",px,py);
+            //printf("%d %d\n",px,py);
             if(display[py * DISPLAY_WIDTH + px] == 1 && pval)
                 V[0xF] = 1;
             display[py * DISPLAY_WIDTH + px] ^= pval;
         }
     }
+}
+
+// Skip next instruction if key with 
+//the value of Vx is pressed.
+
+// Checks the keyboard, and if the 
+//key corresponding to the value of 
+//Vx is currently in the down position, 
+//PC is increased by 2.
+void ins_Ex9E(byte * ins){
+    byte x = *ins & ((byte)(-1)>>sizeof(byte)*4); // get lower nibble
+
+    // if(is_key_down(V[x])){
+    //     pc++;
+    // }
 }
 
 instruction_t ins[] = {
@@ -337,3 +355,4 @@ instruction_t ins[] = {
     ins_3xkk,
     ins_4xkk
 };
+
